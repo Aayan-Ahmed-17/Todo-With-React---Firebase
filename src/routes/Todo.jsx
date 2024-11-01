@@ -12,7 +12,8 @@ const Todo = () => {
    * edit and del todo
    */
   const todoInput = useRef();
-  const [todo, setTodo] = useState(null);
+  const [todo, setTodo] = useState("");
+  const [show, setShow] = useState(true)
 
   const navigate = useNavigate();
 
@@ -29,56 +30,41 @@ const Todo = () => {
     });
   }, []);
 
+  function showCompo(){
+    setShow(!show)
+  }
+
+
   return (
     <>
-      {/* <AddTodo todoInputValue={todoInput} preTodo={todo} todoArr={setTodo} /> */}
-      <div>
-        <h2 className="text-center font-semibold text-2xl mt-12">TODO LIST</h2>
-        <ul className="grid gap-2 w-3/6 mx-auto px-4 mt-3">
-          <li className="border-b-2 leading-6 py-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="option1"
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-              <span className="ml-2">Option 1</span>
-            </label>
-          </li>
-          <li className="border-b-2 leading-6 py-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="option1"
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-              <span className="ml-2">Option 2</span>
-            </label>
-          </li>
-          <li className="border-b-2 leading-6 py-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="option1"
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-              <span className="ml-2">Option 3</span>
-            </label>
-          </li>
-          <li className="border-b-2 leading-6 py-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                name="option1"
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-              <span className="ml-2">Option 4</span>
-            </label>
-          </li>
-          
-          {/* <input type="checkbox" defaultChecked className="checkbox" /> */}
-        </ul>
-      </div>
+        {show && <AddTodo todoInput={todoInput} todo={todo} setTodo={setTodo} setShow={setShow} show={show}/>}
+      {!show && <div className="grid w-4/5  mx-auto">
+        <div>
+          <h2 className="text-center font-semibold text-2xl mt-12">
+            TODO LIST
+          </h2>
+
+          {todo && (
+            <ul className="grid gap-2 w-4/5 mx-auto px-4 mt-3">
+              {todo.map((e , i) =>
+              <li className="border-b-2 leading-6 py-2">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name={`task${i + 1}`}
+                    className="form-checkbox h-5 w-5 text-blue-600"
+                  />
+                  <span className="ml-2">{e}</span>
+                </label>
+              </li>
+              )}
+            </ul>
+          )}
+        </div>
+        <button onClick={showCompo} className="bg-[#6C63FF] text-[#F7F7F7] rounded-sm justify-self-end py-2 px-4 text-2xl box-content mt-10">
+          +
+        </button>
+      </div>}
     </>
   );
 };
