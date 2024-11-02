@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../configs/firebaseConfig";
+// importing to get the data from collection
 import { collection, getDocs } from "firebase/firestore";
 import AddTodo from "../components/AddTodo";
 
@@ -13,16 +14,9 @@ const Todo = () => {
    * edit and del todo
    */
   const todoInput = useRef();
-  const [todo, setTodo] = useState("");
+  const [todo, setTodo] = useState([]);
   const [show, setShow] = useState(true);
   const [checkedItem, setCheckedItem] = useState(false);
-
-  const getData = async () => {
-    const querySnapshot = await getDocs(collection(db, "collectionName"));
-    querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${JSON.stringify(doc.data())}`);
-    });
-  };
 
   const navigate = useNavigate();
 
@@ -38,6 +32,18 @@ const Todo = () => {
       }
     });
   }, []);
+
+  // to get data
+  async function getDataFromFireStore() {
+    try {
+      const querySnapshot = await getDocs(collection(db, "todo"));
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data().title);
+      });
+    } catch (error) {
+      console.warn(error);
+    }
+  }
 
   function showCompo() {
     setShow(!show);
@@ -89,7 +95,8 @@ const Todo = () => {
             )}
           </div>
           <button
-            onClick={showCompo}
+            // onClick={showCompo}
+            onClick={getDataFromFireStore}
             className="bg-[#6C63FF] text-[#F7F7F7] rounded-sm justify-self-end py-2 px-4 text-2xl box-content mt-10"
           >
             +
