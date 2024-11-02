@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../configs/firebaseConfig";
 // importing to get the data from collection
-import { collection, getDocs } from "firebase/firestore";
+import { where, query, collection, getDocs } from "firebase/firestore";
 import AddTodo from "../components/AddTodo";
 
 const Todo = () => {
@@ -25,28 +25,35 @@ const Todo = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         const uid = user.uid;
-        console.log(user);
+        console.log(uid);
         navigate("/todo");
+        getDataFromFireStore()
       } else {
         navigate("/login");
       }
     });
   }, []);
 
-  // to get data
-  async function getDataFromFireStore() {
-    try {
-      const querySnapshot = await getDocs(collection(db, "todo"));
-      const tempTodoArr = []
-      querySnapshot.forEach((doc) => {
-        console.log(doc.data().title);
-        tempTodoArr.push(doc.data().title)
-      });
-      setTodo(tempTodoArr)
-    } catch (error) {
-      console.warn(error);
+    //* to get data with an id
+    async function getDataFromFireStore() {
+      try {
+        // if (auth.currentUser.uid) {
+          const q = query(
+            collection(db, "todo"),
+            where("user", "==", auth.currentUser.uid)
+          );
+          const querySnapshot = await getDocs(q);
+          const tempTodoArr = [];
+          querySnapshot.forEach((doc) => {
+            console.log(doc.data().title);
+            console.log(auth.currentUser.uid);
+            tempTodoArr.push(doc.data().title);
+          });
+          setTodo(tempTodoArr);
+      } catch (error) {
+        console.warn(error);
+      }
     }
-  }
 
   function showCompo() {
     setShow(!show);
@@ -98,8 +105,7 @@ const Todo = () => {
             )}
           </div>
           <button
-            // onClick={showCompo}
-            onClick={getDataFromFireStore}
+            onClick={showCompo}
             className="bg-[#6C63FF] text-[#F7F7F7] rounded-sm justify-self-end py-2 px-4 text-2xl box-content mt-10"
           >
             +
