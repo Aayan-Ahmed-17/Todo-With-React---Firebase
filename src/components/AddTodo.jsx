@@ -4,7 +4,6 @@ import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
 
 const AddTodo = ({ todoInput, setTodo, todo, setShow, show }) => {
-  
   //* push data in todo
 
   async function insertDataToFireStore() {
@@ -14,6 +13,8 @@ const AddTodo = ({ todoInput, setTodo, todo, setShow, show }) => {
           title: todoInput.current.value,
           user: auth.currentUser.uid,
         });
+
+        //pushing vals in todo array || clear input field when open again | change state for hide newTodo compo
         setTodo([...todo, todoInput.current.value]);
         todoInput.current.value = "";
         setShow(!show);

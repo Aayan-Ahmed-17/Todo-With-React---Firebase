@@ -45,8 +45,6 @@ const Todo = () => {
           const querySnapshot = await getDocs(q);
           const tempTodoArr = [];
           querySnapshot.forEach((doc) => {
-            console.log(doc.data().title);
-            console.log(auth.currentUser.uid);
             tempTodoArr.push(doc.data().title);
           });
           setTodo(tempTodoArr);
