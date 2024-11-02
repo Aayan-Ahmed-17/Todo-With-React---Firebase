@@ -37,9 +37,12 @@ const Todo = () => {
   async function getDataFromFireStore() {
     try {
       const querySnapshot = await getDocs(collection(db, "todo"));
+      const tempTodoArr = []
       querySnapshot.forEach((doc) => {
         console.log(doc.data().title);
+        tempTodoArr.push(doc.data().title)
       });
+      setTodo(tempTodoArr)
     } catch (error) {
       console.warn(error);
     }

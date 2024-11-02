@@ -17,19 +17,19 @@ const AddTodo = ({ todoInput, setTodo, todo, setShow, show }) => {
   //   }
   // };
 
-  async function insertDataToFireStore() {
-    if (todoInput.current.value) {
-      try {
-        const docRef = await addDoc(collection(db, "todo"), {
-          title: todoInput.current.value,
-          user: auth.currentUser.uid,
-        });
-        console.log("Document written with ID: ", docRef.id);
-      } catch (e) {
-        console.error("Error adding document: ", e);
-      }
-    }
-  }
+  // async function insertDataToFireStore() {
+  //   if (todoInput.current.value) {
+  //     try {
+  //       const docRef = await addDoc(collection(db, "todo"), {
+  //         title: todoInput.current.value,
+  //         user: auth.currentUser.uid,
+  //       });
+  //       console.log("Document written with ID: ", docRef.id);
+  //     } catch (e) {
+  //       console.error("Error adding document: ", e);
+  //     }
+  //   }
+  // }
 
   return (
     <div className="max-w-96 min-h-72 mx-auto grid border-2 border-slate-500 rounded-xl mt-16">
@@ -53,7 +53,7 @@ const AddTodo = ({ todoInput, setTodo, todo, setShow, show }) => {
         <button
           className="bg-[#6C63FF] text-[#F7F7F7] rounded-sm justify-self-end py-1 px-4 text-md box-content"
           // onClick={addTodo}
-          onClick={insertDataToFireStore}
+          // onClick={insertDataToFireStore}
         >
           Apply
         </button>
