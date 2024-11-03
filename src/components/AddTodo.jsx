@@ -3,7 +3,7 @@ import { auth, db } from "../configs/firebaseConfig";
 import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
 
-const AddTodo = ({ todoInput, setTodo, todo, setShow, show }) => {
+const AddTodo = ({ todoInput, setTodo, todo, setShow, show , name}) => {
   //* push data in todo
 
   async function insertDataToFireStore() {
@@ -29,7 +29,7 @@ const AddTodo = ({ todoInput, setTodo, todo, setShow, show }) => {
   return (
     <div className="max-w-96 min-h-72 mx-auto grid border-2 border-slate-500 rounded-xl mt-16">
       <div className="grid max-h-24">
-        <h2 className="card-title mx-auto">New Note</h2>
+        <h2 className="card-title mx-auto">{name}</h2>
         <input
           type="text"
           placeholder="Enter Task Here"

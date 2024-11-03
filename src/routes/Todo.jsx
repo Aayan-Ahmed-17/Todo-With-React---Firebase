@@ -27,31 +27,31 @@ const Todo = () => {
         const uid = user.uid;
         console.log(uid);
         navigate("/todo");
-        getDataFromFireStore()
+        getDataFromFireStore();
       } else {
         navigate("/login");
       }
     });
   }, []);
 
-    //* to get data with an id
-    async function getDataFromFireStore() {
-      try {
-        // if (auth.currentUser.uid) {
-          const q = query(
-            collection(db, "todo"),
-            where("user", "==", auth.currentUser.uid)
-          );
-          const querySnapshot = await getDocs(q);
-          const tempTodoArr = [];
-          querySnapshot.forEach((doc) => {
-            tempTodoArr.push(doc.data().title);
-          });
-          setTodo(tempTodoArr);
-      } catch (error) {
-        console.warn(error);
-      }
+  //* to get data with an id
+  async function getDataFromFireStore() {
+    try {
+      // if (auth.currentUser.uid) {
+      const q = query(
+        collection(db, "todo"),
+        where("user", "==", auth.currentUser.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      const tempTodoArr = [];
+      querySnapshot.forEach((doc) => {
+        tempTodoArr.push(doc.data().title);
+      });
+      setTodo(tempTodoArr);
+    } catch (error) {
+      console.warn(error);
     }
+  }
 
   function showCompo() {
     setShow(!show);
@@ -59,6 +59,14 @@ const Todo = () => {
 
   function handleCheckox() {
     setCheckedItem(!checkedItem);
+  }
+
+  // TO EDIT A TODO
+  const editTodo = async (item , index) => {
+    const updatedVal = prompt('enter updated val');
+    todo[index] =updatedVal;
+    setTodo([...todo]);
+    console.log('todo updated')
   }
 
   return (
@@ -82,7 +90,7 @@ const Todo = () => {
             {todo && (
               <ul className="grid gap-2 w-4/5 mx-auto px-4 mt-3">
                 {todo.map((e, i) => (
-                  <li key={i} className="border-b-2 leading-6 py-2">
+                  <li key={i} className="border-b-2 leading-6 py-2 flex justify-between group px-2">
                     <label className="flex items-center">
                       <input
                         type="checkbox"
@@ -91,12 +99,11 @@ const Todo = () => {
                         className="form-checkbox h-5 w-5 text-blue-600"
                       />
 
-                      {checkedItem ? (
-                        <span className="ml-2 line-through">{e}</span>
-                      ) : (
-                        <span className="ml-2">{e}</span>
-                      )}
+                      <span className={`ml-2 ${checkedItem && "line-through"}`}>
+                        {e}
+                      </span>
                     </label>
+                      <button type="button" className="bg-[#ffc30d] text-xs py-1 px-2 rounded-md hidden group-hover:inline-flex" onClick={() => editTodo(e , i)}>EDIT</button>
                   </li>
                 ))}
               </ul>
