@@ -15,8 +15,10 @@ const Todo = () => {
    */
   const todoInput = useRef();
   const [todo, setTodo] = useState([]);
-  const [show, setShow] = useState(true);
+  const [addCompo, setAddCompo] = useState(true);
+  const [editCompo, setEditCompo] = useState(false);
   const [checkedItem, setCheckedItem] = useState(false);
+  const [inputDefaultVal, setInputDefaultVal] = useState("");
 
   const navigate = useNavigate();
 
@@ -53,34 +55,47 @@ const Todo = () => {
     }
   }
 
-  function showCompo() {
-    setShow(!show);
-  }
-
   function handleCheckox() {
     setCheckedItem(!checkedItem);
   }
 
+  function showAddCompo() {
+    setAddCompo(true);
+  }
+
   // TO EDIT A TODO
-  const editTodo = async (item , index) => {
-    const updatedVal = prompt('enter updated val');
-    todo[index] =updatedVal;
-    setTodo([...todo]);
-    console.log('todo updated')
+  function editTodo(item) {
+    setEditCompo(true);
+    setInputDefaultVal(item);
+    console.log("todoUpdated");
   }
 
   return (
     <>
-      {show && (
+      {addCompo ? (
         <AddTodo
           todoInput={todoInput}
           todo={todo}
           setTodo={setTodo}
-          setShow={setShow}
-          show={show}
+          setShowCompo={setAddCompo}
+          name={"New Todo"}
+          buttonText={"Apply"}
         />
+      ) : (
+        editCompo && (
+          <AddTodo
+            todoInput={todoInput}
+            todo={todo}
+            setTodo={setTodo}
+            setShowCompo={setEditCompo}
+            name={"Edit Todo"}
+            buttonText={"Save"}
+            inputVal={inputDefaultVal}
+          />
+        )
       )}
-      {!show && (
+
+      {!addCompo && !editCompo && (
         <div className="grid w-4/5  mx-auto">
           <div>
             <h2 className="text-center font-semibold text-2xl mt-12">
@@ -110,7 +125,7 @@ const Todo = () => {
             )}
           </div>
           <button
-            onClick={showCompo}
+            onClick={showAddCompo}
             className="bg-[#6C63FF] text-[#F7F7F7] rounded-sm justify-self-end py-2 px-4 text-2xl box-content mt-10"
           >
             +
