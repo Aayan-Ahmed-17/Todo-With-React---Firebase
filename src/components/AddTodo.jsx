@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { auth, db } from "../configs/firebaseConfig";
-import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
 
 const AddTodo = ({
@@ -12,20 +11,21 @@ const AddTodo = ({
   buttonText,
   inputVal,
 }) => {
-  //* push data in todo
-
+  
+  //* push data firestore
   async function insertDataToFireStore() {
-    if (todoInput.current.value) {
+    if ((todoInput.current.value).trim()) {
+      const val = (todoInput.current.value).trim()
       try {
         const docRef = await addDoc(collection(db, "todo"), {
-          title: todoInput.current.value,
+          title: val,
           user: auth.currentUser.uid,
         });
 
         //pushing vals in todo array || clear input field when open again | change state for hide newTodo compo
-        setTodo([...todo, todoInput.current.value]);
+        setTodo([...todo, val]);
         todoInput.current.value = "";
-        // setShowCompo(false);
+        setShowCompo(false);
 
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
