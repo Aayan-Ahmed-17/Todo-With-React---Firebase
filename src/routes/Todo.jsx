@@ -17,7 +17,6 @@ const Todo = () => {
   const [todo, setTodo] = useState([]);
   const [addCompo, setAddCompo] = useState(true);
   const [editCompo, setEditCompo] = useState(false);
-  const [checkedItem, setCheckedItem] = useState(false);
   const [inputDefaultVal, setInputDefaultVal] = useState("");
 
   const navigate = useNavigate();
@@ -53,10 +52,6 @@ const Todo = () => {
     } catch (error) {
       console.warn(error);
     }
-  }
-
-  function handleCheckox() {
-    setCheckedItem(!checkedItem);
   }
 
   function showAddCompo() {
@@ -106,15 +101,15 @@ const Todo = () => {
               <ul className="grid gap-2 w-4/5 mx-auto px-4 mt-3">
                 {todo.map((e, i) => (
                   <li key={i} className="border-b-2 leading-6 py-2 flex justify-between group px-2">
-                    <label className="flex items-center">
+                    <label className="flex items-center w-full" htmlFor={i} >
                       <input
+                        id={i}
                         type="checkbox"
                         name={`task${i + 1}`}
-                        onChange={handleCheckox}
-                        className="form-checkbox h-5 w-5 text-blue-600"
+                        className="form-checkbox h-5 w-5 text-blue-600 peer"
                       />
 
-                      <span className={`ml-2 ${checkedItem && "line-through"}`}>
+                      <span className="ml-2 peer-checked:line-through peer-checked:text-slate-500" id={i}>
                         {e}
                       </span>
                     </label>
