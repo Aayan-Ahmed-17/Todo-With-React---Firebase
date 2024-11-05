@@ -7,12 +7,6 @@ import { where, query, collection, getDocs } from "firebase/firestore";
 import AddTodo from "../components/AddTodo";
 
 const Todo = () => {
-  /************* Tasks *******************
-   * enter todo field and get value
-   * show to in a list
-   * create todo button
-   * edit and del todo
-   */
   const todoInput = useRef();
   const [todo, setTodo] = useState([]);
   const [addCompo, setAddCompo] = useState(true);
@@ -35,34 +29,29 @@ const Todo = () => {
     });
   }, []);
 
-  //* to get data with an id
+  //* adding data in firestore func in addTodo file
+  //* get data func here
   async function getDataFromFireStore() {
     try {
-      // if (auth.currentUser.uid) {
       const q = query(
         collection(db, "todo"),
         where("user", "==", auth.currentUser.uid)
       );
       const querySnapshot = await getDocs(q);
-      const tempTodoArr = [];
       querySnapshot.forEach((doc) => {
-        tempTodoArr.push(doc.data().title);
+        todo.push({...doc.data(), docid:doc.id});
       });
-      setTodo(tempTodoArr);
+      setTodo(todo);
+      console.log(todo)
     } catch (error) {
       console.warn(error);
     }
   }
 
-  function showAddCompo() {
-    setAddCompo(true);
-  }
-
   // TO EDIT A TODO
   function editTodo(item) {
     setEditCompo(true);
-    setInputDefaultVal(item);
-    console.log("todoUpdated");
+    setInputDefaultVal(item.title);
   }
 
   return (
@@ -97,7 +86,7 @@ const Todo = () => {
               TODO LIST
             </h2>
 
-            {todo && (
+            {todo.length > 0 && (
               <ul className="grid gap-2 w-4/5 mx-auto px-4 mt-3">
                 {todo.map((e, i) => (
                   <li key={i} className="border-b-2 leading-6 py-2 flex justify-between group px-2">
@@ -110,17 +99,17 @@ const Todo = () => {
                       />
 
                       <span className="ml-2 peer-checked:line-through peer-checked:text-slate-500" id={i}>
-                        {e}
+                        {e.title}
                       </span>
                     </label>
-                      <button type="button" className="bg-[#ffc30d] text-xs py-1 px-2 rounded-md hidden group-hover:inline-flex" onClick={() => editTodo(e , i)}>EDIT</button>
+                      <button type="button" className="bg-[#ffc30d] hover:bg-[#daa70f] text-xs py-1 px-2 rounded-md hidden group-hover:inline-flex" onClick={() => editTodo(e , i)}>EDIT</button>
                   </li>
                 ))}
               </ul>
             )}
           </div>
           <button
-            onClick={showAddCompo}
+            onClick={()=>setAddCompo(true)}
             className="bg-[#6C63FF] text-[#F7F7F7] rounded-sm justify-self-end py-2 px-4 text-2xl box-content mt-10"
           >
             +

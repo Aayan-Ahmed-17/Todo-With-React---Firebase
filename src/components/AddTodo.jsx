@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { auth, db } from "../configs/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, where, query,  getDocs } from "firebase/firestore";
 
 const AddTodo = ({
   todoInput,
@@ -23,7 +23,13 @@ const AddTodo = ({
         });
 
         //pushing vals in todo array || clear input field when open again | change state for hide newTodo compo
-        setTodo([...todo, val]);
+        todo.push({
+          title: todoInput.current.value,
+          uid: auth.currentUser.uid,
+          docid: docRef.id
+        })
+        setTodo([...todo])
+        console.log(todo)
         todoInput.current.value = "";
         setShowCompo(false);
 
@@ -33,6 +39,8 @@ const AddTodo = ({
       }
     }
   }
+  
+
 
   //* edit text of a todo
 
