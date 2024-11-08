@@ -6,7 +6,8 @@ import ErrorPage from "./ErrorPage.jsx";
 import Login from "./routes/Login.jsx";
 import Register from "./routes/Register";
 // import ProductDetail from "./routes/ProductDetail";
-import Todo from "./routes/Todo.jsx";
+// import Todo from "./routes/Todo.jsx";
+import TodoPage from "./routes/TodoPage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
       },
       {
         path: "todo",
-        element: <Todo />,
+        element: <TodoPage />,
       }
       // {
       //   path: "product/:id",
