@@ -17,11 +17,11 @@ import { auth, db } from "../configs/firebaseConfig";
 
 // pages/TodoPage.jsx
 const TodoPage = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([]); //All todo Array
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [mode, setMode] = useState("view"); // 'view', 'add', 'edit'
-  const [currentTodo, setCurrentTodo] = useState(null);
+  const [mode, setMode] = useState("add"); // 'view', 'add', 'edit'
+  const [currentTodo, setCurrentTodo] = useState(null); //Selected to array
 
   //* For User Authn
   const navigate = useNavigate();
@@ -39,7 +39,6 @@ const TodoPage = () => {
   }, []);
 
   const fetchTodos = async () => {
-    // setIsLoading(true);
     try {
       const q = query(
         collection(db, "todo"),
@@ -59,14 +58,17 @@ const TodoPage = () => {
     }
   };
 
+  //* Add Todo
   const handleAddTodo = async (todoText) => {
     setIsLoading(true);
     try {
+      //* add data to firestore
       const docRef = await addDoc(collection(db, "todo"), {
         title: todoText,
         user: auth.currentUser.uid,
       });
 
+      //* add todo to the local variable
       const newTodo = {
         title: todoText,
         user: auth.currentUser.uid,
@@ -83,13 +85,16 @@ const TodoPage = () => {
     }
   };
 
+  //* Edit Todo
   const handleUpdateTodo = async (todoText) => {
     setIsLoading(true);
     try {
+      //* edit in firestore
       const todoRef = doc(db, "todo", currentTodo.docid);
       await updateDoc(todoRef, {
         title: todoText,
       });
+
 
       setTodos((prev) =>
         prev.map((todo) =>
@@ -109,7 +114,6 @@ const TodoPage = () => {
   };
 
   const handleDeleteTodo = async (todoId) => {
-    if (!window.confirm("Are you sure you want to delete this todo?")) return;
 
     setIsLoading(true);
     try {

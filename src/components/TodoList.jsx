@@ -11,19 +11,19 @@ const TodoList = ({ todos, onEdit, onDelete }) => {
     }
   
     return (
-      <div className=''>
+      <>
         <h2 className="text-center font-semibold text-2xl my-8">TODO LIST</h2>
         <ul className="grid gap-2 w-4/5 mx-auto px-4 mt-3">
           {todos.map((todo) => (
             <TodoItem
-              key={todo.docid}
-              todo={todo}
+              key={todo.docid} //* not a prop
+              todo={todo} //* every single todo
               onEdit={onEdit}
               onDelete={onDelete}
             />
           ))}
         </ul>
-      </div>
+      </>
     );
   };
 
