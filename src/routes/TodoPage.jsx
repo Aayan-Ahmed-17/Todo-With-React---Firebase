@@ -38,6 +38,7 @@ const TodoPage = () => {
     });
   }, []);
 
+  //* For Fetch Firebase Todos
   const fetchTodos = async () => {
     try {
       const q = query(
@@ -113,8 +114,8 @@ const TodoPage = () => {
     }
   };
 
+  //* Delete todo local & firebase on click
   const handleDeleteTodo = async (todoId) => {
-
     setIsLoading(true);
     try {
       await deleteDoc(doc(db, "todo", todoId));
@@ -127,11 +128,13 @@ const TodoPage = () => {
     }
   };
 
+  //* edit button functionality
   const handleEdit = (todo) => {
     setCurrentTodo(todo);
     setMode("edit");
   };
-
+  
+  //* cancel button functionality
   const handleCancel = () => {
     setMode("view");
     setCurrentTodo(null);
